@@ -1,0 +1,23 @@
+<div class="row m-4">
+    <div class="col-lg-4" style="float:none;margin:auto;">
+        <select [(ngModel)]="selectedValue" class="form-control"
+             (change)="onOptionsSelected()">
+            <option value="">Select State</option>
+            <option *ngFor="let state of States" [value]="state.StateCode">
+                {{state.StateName}}
+            </option>
+        </select>
+    </div>
+</div>
+
+<div class="row m-2 p-2">
+    <div class="col-lg-6" style="float:none;margin:auto;">
+        <div class="chart-container" style="position: relative;">
+            <canvas id="canvas"></canvas>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        
+    </div>
+</div>
+<hr>

@@ -5,11 +5,15 @@ import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { DashboardComponent } from '../app/dashboard/dashboard.component';
+import { TotalCasesComponent } from './total-cases/total-cases.component';
+import { DataDisplayComponent } from './data-display/data-display.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DashboardComponent
+    DashboardComponent,
+    TotalCasesComponent,
+    DataDisplayComponent
   ],
   imports: [
     BrowserModule,
