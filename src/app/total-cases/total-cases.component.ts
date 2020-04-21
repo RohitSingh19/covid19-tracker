@@ -3,6 +3,8 @@ import { DataService } from '../data-display/data.service';
 import { TotalCases } from '../shared/death-recoveries.model';
 import { PatientStatus } from '../shared/patient-status.model';
 
+import { LoadingBarService } from '@ngx-loading-bar/core';
+
 @Component({
   selector: 'app-total-cases',
   templateUrl: './total-cases.component.html',
@@ -17,9 +19,10 @@ export class TotalCasesComponent implements OnInit {
   ActiveCases = 0;
   TotalRawData = [];
 
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService, private loading: LoadingBarService) { }
 
   ngOnInit() {
+    this.loading.start();
     this.dataService.getDeathRecoveredData().subscribe((result: TotalCases[]) => {
       let data;
       for (const [key, value] of Object.entries(result)) {
@@ -46,6 +49,7 @@ export class TotalCasesComponent implements OnInit {
         this.TotalCases = RawData.length;
         this.ActiveCases = this.TotalCases - (this.Recovered + this.Deceased);
       }
+      this.loading.stop();
     });
   }
 

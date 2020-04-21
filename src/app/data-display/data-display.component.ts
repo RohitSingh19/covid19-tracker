@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from './data.service';
 import { IHash, IHashWithObject } from '../shared/Hash';
 import { State, StateWithData } from '../shared/state.model';
+import { PatientStatus } from '../shared/patient-status.model';
+import { LoadingBarService } from '@ngx-loading-bar/core';
 
 import * as Chart from 'chart.js';
 
@@ -16,13 +18,22 @@ export class DataDisplayComponent implements OnInit {
   myHashObj: IHashWithObject = {};
   selectedValue: string;
   States: State[] = [];
-  DistrictsData: StateWithData [] = [];
+  DistrictsData: StateWithData[] = [];
 
   barChart: Chart;
   lables = [];
   figure = [];
 
-  constructor(private dataService: DataService) { }
+  StatesArray: [];
+
+  TotalConfirmedCasesStateWise = 0;
+  TotalRecoveredCasesStateWise = 0;
+  TotalDeceasedCasesStateWise = 0;
+  TotalActiveCasesStateWise = 0;
+
+  displayStateWiseStats = false;
+
+  constructor(private dataService: DataService, private loader: LoadingBarService) { }
 
   ngOnInit() {
     this.dataService.getAllStates().subscribe(resultData => {
@@ -42,21 +53,17 @@ export class DataDisplayComponent implements OnInit {
   }
 
   onOptionsSelected() {
-    console.log(this.selectedValue);
-    //this.fetchAllStatesData(this.selectedValue);
-    // this.resourceArr = [];
-    // this.IsUserSelectsState = false;
-    // this.fetchAllStatesData(this.optionSelected);
-
+    this.loader.start();
     this.DistrictsData.forEach((obj) => {
-       if (obj.StateCode === this.selectedValue)  {
-            this.myHashObj[obj.StateCode] = obj.DistictsRecord;
-        }
+      if (obj.StateCode === this.selectedValue) {
+        this.myHashObj[obj.StateCode] = obj.DistictsRecord;
+      }
     });
-    this.fetchAllStatesData();
+    this.drawChart();
+    this.drawTable();
   }
 
-  fetchAllStatesData() {
+  drawChart() {
     if (this.barChart) {
       this.barChart.destroy();
       this.lables = [];
@@ -90,7 +97,7 @@ export class DataDisplayComponent implements OnInit {
         },
         title: {
           display: true,
-          text: 'Total confirmed cases in districts of ' + this.selectedValue
+          text: 'Total Confirmed Cases'
         },
         layout: {
           padding: {
@@ -111,18 +118,52 @@ export class DataDisplayComponent implements OnInit {
         scales: {
           xAxes: [{
             stacked: true,
-            ticks : {
-                beginAtZero: true
+            ticks: {
+              beginAtZero: true
             }
-        }],
-        yAxes: [{
+          }],
+          yAxes: [{
             stacked: false,
-            ticks : {
-                beginAtZero: true
+            ticks: {
+              beginAtZero: true
             }
-        }]
+          }]
         }
       }
     });
   }
+
+
+  drawTable() {
+    this.TotalActiveCasesStateWise = 0;
+    this.TotalConfirmedCasesStateWise = 0;
+    this.TotalRecoveredCasesStateWise = 0;
+    this.TotalDeceasedCasesStateWise = 0;
+
+    this.dataService.getStatesDailyData()
+      .subscribe(response => {
+        let data;
+        this.StatesArray = [];
+        for (const [key, value] of Object.entries(response)) {
+          data = response[key];
+          this.StatesArray = data;
+        }
+
+        for (const index in this.StatesArray) {
+          if (this.StatesArray[index]['status'] === PatientStatus.Confirmed) {
+            this.TotalConfirmedCasesStateWise += +this.StatesArray[index][this.selectedValue.toLowerCase()];
+          } else if (this.StatesArray[index]['status'] === PatientStatus.Recovered) {
+            this.TotalRecoveredCasesStateWise += +this.StatesArray[index][this.selectedValue.toLowerCase()]
+          } else if (this.StatesArray[index]['status'] === PatientStatus.Deceased) {
+            this.TotalDeceasedCasesStateWise += +this.StatesArray[index][this.selectedValue.toLowerCase()]
+          }
+        }
+
+        this.TotalActiveCasesStateWise = this.TotalConfirmedCasesStateWise -
+            (this.TotalRecoveredCasesStateWise - this.TotalDeceasedCasesStateWise);
+        this.loader.stop();
+        this.displayStateWiseStats = true;
+      });
+  }
+
 }

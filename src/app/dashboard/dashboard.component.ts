@@ -24,30 +24,14 @@ export class DashboardComponent implements OnInit {
   resourceArr: Resources[] = [];
   buttonLabel = 'Show';
   
-  StatesArray: [];
+  
 
   constructor(private dataService: DataService, private loader: LoadingBarService) { }
 
   ngOnInit(): void {
 
 
-    this.dataService.getStatesDailyData()
-      .subscribe(response => {
-        let data;
-        this.StatesArray = [];
-        for (const [key, value] of Object.entries(response)) {
-          data = response[key];
-          this.StatesArray = data;
-        }
-        let val = 0;
-        // for (const index in this.StatesArray) {
-        //   console.log('start');
-        //   if (this.StatesArray[index]['status'] === 'Confirmed') {
-        //     val += +this.StatesArray[index]['hr'];
-        //   }
-        // }
-        // console.log(val);
-      });
+    
 
 
     // this.loader.start();
@@ -81,7 +65,6 @@ export class DashboardComponent implements OnInit {
   //   // }
   // }
 
- 
 
 
 

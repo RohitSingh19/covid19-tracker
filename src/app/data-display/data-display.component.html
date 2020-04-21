@@ -17,7 +17,40 @@
         </div>
     </div>
     <div class="col-lg-6">
-        
+        <div class="row" style="margin-top: 33px;" *ngIf="displayStateWiseStats">
+            <div class="col-lg-3">
+                <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+                    <div class="card-header">Confirmed</div>
+                    <div class="card-body">
+                      <h5 class="card-title">{{this.TotalConfirmedCasesStateWise}}</h5>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+                    <div class="card-header">Active</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{this.TotalActiveCasesStateWise}}</h5>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+                    <div class="card-header">Recovered</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{this.TotalRecoveredCasesStateWise}}</h5>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="card bg-light mb-3 card-border-deceased" style="max-width: 18rem;">
+                    <div class="card-header">Deceased</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{this.TotalDeceasedCasesStateWise}}</h5>
+                    </div>
+                  </div>
+            </div>
+        </div>
     </div>
 </div>
 <hr>
