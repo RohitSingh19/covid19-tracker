@@ -1,7 +1,7 @@
 <div class="row m-4">
     <div class="col-lg-4" style="float:none;margin:auto;">
         <select [(ngModel)]="selectedValue" class="form-control"
-             (change)="onOptionsSelected()">
+             (change)="onOptionsSelected($event)">
             <option value="">Select State</option>
             <option *ngFor="let state of States" [value]="state.StateCode">
                 {{state.StateName}}

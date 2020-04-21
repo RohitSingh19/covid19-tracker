@@ -13,7 +13,6 @@ import { Resources } from '../shared/resources.model';
 export class DashboardComponent implements OnInit {
 
 
-  
   selectedStatehashMap: IHash = {};
   lables = [];
   figure = [];
@@ -21,17 +20,14 @@ export class DashboardComponent implements OnInit {
   table = false;
   barChart: Chart;
   IsUserSelectsState = false;
-  resourceArr: Resources[] = [];
-  buttonLabel = 'Show';
-  
-  
+
 
   constructor(private dataService: DataService, private loader: LoadingBarService) { }
 
   ngOnInit(): void {
 
 
-    
+
 
 
     // this.loader.start();
@@ -68,20 +64,6 @@ export class DashboardComponent implements OnInit {
 
 
 
-  fetchAllResources(selectedState: string) {
-    this.dataService.getResources()
-      .subscribe((resource: Resources[]) => {
-        this.resourceArr = [];
-        for (const index in resource['resources']) {
-          if (resource['resources']) {
-            const key = resource['resources'][index]['state'];
-            if (key === selectedState) {
-              const value = resource['resources'][index];
-              this.resourceArr.push(value);
-            }
-          }
-        }
-      });
-  }
+
 
 }

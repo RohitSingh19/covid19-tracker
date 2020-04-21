@@ -52,13 +52,17 @@ export class DataDisplayComponent implements OnInit {
     console.log(this.DistrictsData);
   }
 
-  onOptionsSelected() {
+  onOptionsSelected($event) {
     this.loader.start();
+    const SelectedStateText = $event.target.options[$event.target.options.selectedIndex].text;
     this.DistrictsData.forEach((obj) => {
       if (obj.StateCode === this.selectedValue) {
         this.myHashObj[obj.StateCode] = obj.DistictsRecord;
       }
     });
+
+    this.dataService.setSelectedState(SelectedStateText);
+
     this.drawChart();
     this.drawTable();
   }

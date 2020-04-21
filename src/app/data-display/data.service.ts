@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import { TotalCases } from '../shared/death-recoveries.model';
 import { Resources } from '../shared/resources.model';
+import { Observable, Subject } from 'rxjs';
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 @Injectable({
     providedIn: 'root'
 })
 export class DataService {
+
+    private subject = new Subject<any>();
 
     constructor(private http: HttpClient) {}
 
@@ -33,5 +36,13 @@ export class DataService {
 
     getStatesDailyData() {
         return this.http.get<any[]>('https://api.covid19india.org/states_daily.json');
+    }
+
+    setSelectedState(message: string) {
+        this.subject.next({data: message});
+    }
+
+    getSeletedState(): Observable<any> {
+        return this.subject.asObservable();
     }
 }

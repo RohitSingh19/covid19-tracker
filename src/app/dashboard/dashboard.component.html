@@ -13,29 +13,4 @@
 
 <app-data-display></app-data-display>
 
-<!-- <div class="row m-4">
-    <div class="col-lg-12 text-center">
-        <button (click)="showHelpCentres()"
-         class="btn btn-outline-primary">{{this.buttonLabel}} Help Centers</button>
-    </div>
-</div>
-<p class="text-center" *ngIf="IsUserSelectsState">
-    Total {{this.resourceArr.length}} help centers found in {{this.selectedOption}}</p>
-<div class="row m-2 p-2">
-    <div class="col-sm-3 col-xs-6 col-lg-3" 
-    *ngFor="let resource of resourceArr">
-        <div class="card custom-card scrollbar" style="margin-top: 5px;">
-            <div class="card-body">
-                <p class="text-center text-success">{{resource.category}}</p>
-                <small class="card-title font-weight-bold">
-                    {{resource.nameoftheorganisation}} - {{resource.city}} - {{resource.state}}
-                </small>
-                <p class="card-text">{{resource.descriptionandorserviceprovided}}</p>
-                <p class="card-text"><i class="fa fa-phone" aria-hidden="true"></i> {{resource.phonenumber}}</p>
-                <i class="fa fa-link" aria-hidden="true">
-                    <a class="btn btn-link" href={{resource.contact}} target="_blank">Contact</a>
-                </i>
-            </div>
-        </div>
-    </div>
-</div> -->
+<app-help-centers></app-help-centers>
