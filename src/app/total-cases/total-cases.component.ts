@@ -36,7 +36,7 @@ export class TotalCasesComponent implements OnInit {
           this.Deceased++;
         }
       }
-    });
+    }, error => console.log(error));
 
 
     this.dataService.getRawData().subscribe(resultData => {
@@ -50,7 +50,7 @@ export class TotalCasesComponent implements OnInit {
         this.ActiveCases = this.TotalCases - (this.Recovered + this.Deceased);
       }
       this.loading.stop();
-    });
+    }, error => console.log(error));
   }
 
 }

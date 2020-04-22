@@ -44,7 +44,7 @@ export class HelpCentersComponent implements OnInit {
             }
           }
         }
-      });
+      }, error => console.log(error));
   }
 
 

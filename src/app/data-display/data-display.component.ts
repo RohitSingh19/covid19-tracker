@@ -33,6 +33,7 @@ export class DataDisplayComponent implements OnInit {
 
   displayStateWiseStats = false;
 
+  SelectedStateText: string;
   constructor(private dataService: DataService, private loader: LoadingBarService) { }
 
   ngOnInit() {
@@ -47,24 +48,26 @@ export class DataDisplayComponent implements OnInit {
           DistictsRecord: value['districtData']
         });
       }
-    });
-
-    console.log(this.DistrictsData);
+    }, error => console.log(error));
   }
 
   onOptionsSelected($event) {
-    this.loader.start();
-    const SelectedStateText = $event.target.options[$event.target.options.selectedIndex].text;
-    this.DistrictsData.forEach((obj) => {
-      if (obj.StateCode === this.selectedValue) {
-        this.myHashObj[obj.StateCode] = obj.DistictsRecord;
-      }
-    });
+    if (this.selectedValue) {
+      this.loader.start();
+      this.SelectedStateText = $event.target.options[$event.target.options.selectedIndex].text;
+      this.DistrictsData.forEach((obj) => {
+        if (obj.StateCode === this.selectedValue) {
+          this.myHashObj[obj.StateCode] = obj.DistictsRecord;
+        }
+      });
 
-    this.dataService.setSelectedState(SelectedStateText);
-
-    this.drawChart();
-    this.drawTable();
+      this.dataService.setSelectedState(this.SelectedStateText);
+      this.drawChart();
+      this.drawTable();
+    } else {
+      this.displayStateWiseStats = false;
+      this.barChart.destroy();
+    }
   }
 
   drawChart() {
@@ -101,7 +104,7 @@ export class DataDisplayComponent implements OnInit {
         },
         title: {
           display: true,
-          text: 'Total Confirmed Cases'
+          text: 'Total confirmed cases in all districts of ' + this.SelectedStateText
         },
         layout: {
           padding: {
@@ -164,10 +167,10 @@ export class DataDisplayComponent implements OnInit {
         }
 
         this.TotalActiveCasesStateWise = this.TotalConfirmedCasesStateWise -
-            (this.TotalRecoveredCasesStateWise - this.TotalDeceasedCasesStateWise);
+          (this.TotalRecoveredCasesStateWise - this.TotalDeceasedCasesStateWise);
         this.loader.stop();
         this.displayStateWiseStats = true;
-      });
+      }, error => console.log(error));
   }
 
 }
